@@ -13,7 +13,7 @@
 \usepackage[nottoc]{tocbibind}
 
 \title{
-    {Deep Q-learning in Grid-based Games}
+    {Deep Q-learning in Grid Worlds}
 }
 \author{Mihnea Ungureanu}
 
@@ -22,21 +22,30 @@
 \maketitle
 
 \chapter*{Abstract}
-Abstract goes here.
+Over the relatively recent years, \textbf{reinforcement learning (RL)} has gained immense popularity.
+A multitude of interesting results in this field focuses on agents learning in simple, game-like, 2D grid-based environments.
+
+In this paper, we focus on one particular technique in RL -- Q-learning -- and its applications in grid-based, game-like environments.
+
+Classic Q-learning was an early breaktrhough in RL.
+We document its evolution and build a survey of improvements over the original.
+These techniques are used in practice and have good results in certain areas, such as playing Atari games.
+We give examples of succesful applications and explain why Q-learning played a key role.
+Finally, we look at advantages and disadvantages over other techniques in RL.
 
 \tableofcontents
 
-\chapter{Introduction}
-%\input{chapters/theory}
+\chapter{Short Introduction to RL}
+\input{chapters/rl}
 
-\chapter{Deep Q-learning}
-%\input{chapters/results}
+\chapter{Q-learning and Deep Q-networks}
+\input{chapters/dql}
 
-\chapter{Architecture}
-%\input{chapters/architecture}
+\chapter{Application in Grid Worlds and 2D Games}
+\input{chapters/application}
 
-\chapter{Conclustion and Future Work}
-%\input{chapters/conclusion}
+\chapter{Conclusion}
+\input{chapters/conclusion}
 
 \bibliography{references}
 
