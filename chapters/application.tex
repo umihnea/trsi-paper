@@ -1,3 +1,26 @@
-\section{In Atari DQN}
+% maybe merge Q_ theory chapter and this one?
 
-\section{In Grid-based Games}
+\section{Atari Games}
+
+* the results of atari dqn need to be quantified here [further analyisis and organization]
+* break down atari dqn results here
+* start from the 2 articles in The Bin
+* 'deep rl does not work yet' has some interesting insights about Atari DQN to top it off :)
+
+\section{Roguelikes}
+
+* rouge was a very early vido game [cite Wikipedia] designed to be played
+in a terminal [present a figure]
+* rogue requires the player to navigate maze-like maps
+* exploration mechanics like trying keys to open locked doors and hidden passages
+* it also requires combat:
+* there are monster encounters: monsters have resistances that the player has to find a way around and vulnerabilities that the player can exploit
+* there are two studies of significance [which I read], one by Japanese researchers, the other by Italian researchers
+* those studies aimed to train agents that produced@ optimal behaviour in environments close to the original game
+* the Italian team: produced a wrapper over rogue, turned off combat because it was overwhelming, tried a bunch of methods, open results
+* the Japanese team: tried to simulate combat exclusively, agents learned to fight some classes of monsters and bosses
+
+* why roguelikes?
+* we considered roguelikes the appropriate level of complexity for agents to handle and still thrive
+* a toy problem but an optimal solution has not yet been found
+* it has the potential of creating interesting behaviour patterns which would help address problems in RL (and any specific method applied i.e. Q-learning)
