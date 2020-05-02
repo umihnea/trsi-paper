@@ -16,13 +16,13 @@ Both systems have managed to surpass all their predecessors in game performance,
 The key difference was that their training was done with absolutely no expert knowledge for either system (hence the ``zero'').
 Instead, everything was learned by self-play \cite{azero}.
 
-\textit{Mnih et al.}'s \textbf{DQN} (2013)\cite{atari-dqn} managed human-level performance at seven classic Atari games.
+\textit{Mnih et al.}'s \textbf{DQN}\cite{atari-dqn} (2013) managed human-level performance at seven classic Atari games.
 Following the success of DQN, the community worked to improve the standard algorithms.
 \textbf{Rainbow DQN} (2017)\cite{rainbow-dqn} is the culmination of that work.
 The authors succesfully combined multiple high-quality improvement methods over the original DQN.
 The resulting algorithm set a new record on the Atari benchmark.
 
-OpenAI Five (2018)\cite{openai-dota} produced a bot that managed to beat top professional Dota 2 players in international championships.
+\textbf{OpenAI Five}\cite{openai-dota} (2018) produced a bot that managed to beat top professional Dota 2 players in international championships.
 
 Despite most of the above list being focused on achievements in video games, RL has been applied to other problems including robot control, elevator scheduling, telecommunications\cite{wiki:Reinforcement_learning}.
 
@@ -47,7 +47,7 @@ First of all, we present the agent-environment feedback loop, as it is crucial t
 We use the concept of \textbf{state}. The state most often refers to the internal state of the agent. Although, in some contexts, we can use it to mean the environment state.
 A state contains relevant information from the environment at a given time-step.
 A key point in RL is that a well-engineered (agent) state captures all the relevant information and removes the need of explicitly memorizing state history.
-This is mathematically described the \textbf{Markov property}\cite{silver-lectures}, a fundamental part of the mathematical framework underpinning RL - MDPs (Markov Decision Processes).
+This is mathematically by described the \textbf{Markov property}\cite{silver-lectures}, a fundamental property of the mathematical framework underpinning RL -- Markov decision processes (MDPs).
 
 A \textbf{policy} completely characterizes the agent’s behaviour.
 ``It is a mapping from perceived states of the environment to actions to be taken in those states'' \cite{rlai}.
@@ -56,16 +56,21 @@ A \textbf{stochastic policy}\cite{silver-lectures} is a probability distribution
 
 \subsection{Reward}
 ``The reward signal is the primary basis of altering the policy.'' \cite{rlai}.
-The \textbf{reward} models the problem-defined goals as a scalar that can be associated with each move of an agent.
+The \textbf{reward} models the problem-defined goals as a scalar that can be associated with each state transition.
 The assertion that we can completely and correctly model all goals using reward functions is central to the field of RL.
 This is called the \textbf{Reward Hypothesis} and is formulated below:
 \begin{quotation}
     That all of what we mean by goals and purposes can be well thought of as maximization of the expected value of the cumulative sum of a received scalar signal (called reward). \textit{(from \cite{rlai}, Chapter 3.2)}
 \end{quotation}
 
-The goal of the agent is to maximize some notion of cumulative reward (the \textbf{return}).
-There are multiple mathematical models to represent the return.
-Elaboration on return and the notion of discounting is besides the scope of this paper, but the simplest example is to simply sum the reward over a finite number of steps.
+The \textbf{return} denotes the cumulative reward obtained by the agent over time.
+This is what a RL system is supposed to maximize.
+There are multiple mathematical models used to represent the return.
+The simplest example is to simply sum the reward over a finite number of steps.
+However, in practice we often use \textbf{discounting}.
+Discounting is, simply, a way to control how much the agent cares about future rewards.
+More on this topic can be found in either theorethical reference \cite{rlai,silver-lectures}.
+% In the actual paper, elaborate here.
 
 \subsection{Value Function}
 
@@ -78,20 +83,22 @@ The value of a state is given by two things:
 \end{enumerate}
 
 This models a \textbf{long-term thinking aspect} into learning, as choosing one state over another often excludes future paths of action.
-Think of a game of chess. If one move leads to the opponent capturing one of the agent's pieces, no future actions can be executed with that piece.
-Thus, making a move with a high initial reward (let’s say the agent trades a pawn for a knight), excludes -- for example -- the option of \textbf{promoting} that particular pawn (a higher, later reward).
+Let us take a game of chess as example.
+If one move leads to the opponent capturing one of the agent's pieces, no future actions can be executed with that piece.
+Thus, making a move with a high initial reward (for example, the agent trades a pawn for a knight), excludes -- for example -- the option of \textbf{promoting} that particular pawn (a later, higher reward).
 
 \subsection{Model}
 A RL system may or may not have a \textbf{model}.
 A \textbf{model} (of the environment) allows the agent to plan and make predictions of its environment.
 
 Some algorithms focus explicitly on learning a model and use it for \emph{planning}.
-This class is called \textbf{model-based}.
+This approach is called \textbf{model-based}.
 In this case, an agent can query the model to simulate what would happen with the environment, before actually choosing an action (hence the planning aspect).
 
-Approaches without a model are called \textbf{model-free}. Model-free agents are ``explicitly trial-and-error learners'' \cite{rlai}.
+Approaches without a model are called \textbf{model-free}.
+Model-free agents are ``explicitly trial-and-error learners'' \cite{rlai}.
 
-\begin{figure}[h]
+\begin{figure}[ht]
     \caption{A way of classifying RL methods based on whether it has a value function, policy or model. (Reproduced from David Silver's lectures. \cite{silver-lectures})}
     \vspace*{0.2cm}
     \centering
