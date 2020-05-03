@@ -7,7 +7,7 @@ Q-learning is part of \textbf{temporal difference (TD)} learning.
 TD is a class of solution methods in RL that is part of the model-free subset \cite{rlai}.
 An advantage of TD learning can learn from incomplete episodes \cite{long-peak-rl}.
 
-\subsection{Q-learning and the Q function}
+\subsection{The Q-function}
 In a Q-learning problem, the focus of our optimization is explicitly on actions, depending on the state they are taken in.
 What we defined in \ref{rl:value-func} is a state-value function, as it maps each state to a value representing its desirability.
 The Q function in Q-learning, in contrast, is an \emph{action-value function}.
@@ -24,13 +24,14 @@ Through the iterative process of Q-learning, our \(Q\) eventually converges to \
 Q-learning is useful in problems with a finite number of states and a finite set of possible actions.
 In the most trivial examples, the Q function can be represented as a table, memorizing state and action.
 
-\subsection{Q-networks}
+\subsection{(Deep) Q-networks}
 
 Using a dictionary (data structure) to map state-action pairs to their values breaks down quickly in practice.
 Instead, we need a more powerful model to store and update our Q-function.
 A \textbf{neural network} can fill in the role of the function approximator.
 This solves the data efficiency problem of Q-learning \cite{long-peak-rl}.
-We call this a \textbf{Q-network}, or \textbf{deep Q-network}, denoting it is multi-layered.
+We call this a \textbf{Q-network}.
+A \textbf{deep Q-network} has a multi-layered aspect.
 ``The Q-network can be a multi-layer dense neural network, a convolutional network, or a recurrent network, depending on the problem'' \cite{long-peak-rl}.
 
 \section{Atari DQN}
@@ -39,25 +40,46 @@ Unfortunately, using a neural network to approximate the Q-function introduces a
 Whereas classical Q-learning is shown to be stable and manages to converge to the optimal values under easily-met conditions \cite{atari-dqn},
 taking the Q-network approach may introduce \textbf{instability} and \textbf{divergence} \cite{long-peak-rl}.
 
-\textbf{Atari DQN} \cite{atari-dqn} tackles those issues by introducing two key concepts: experience replay and a target network. In the upcoming section, we explain these crucial improvements.
+\textbf{Atari DQN} \cite{atari-dqn} was used sucesfully to train RL agents on a set of seven classic Atari games, obtaining varying degrees of human performance on each.
+The paper is considered a staple in the field of RL and Q-learning, and solved important problems with the original algorithm.
+
+Atari DQN tackles the issues of Q-networks by introducing 
+\textbf{experience replay}.
+
+\subsection{Transition}
+
+The papers discussed below define a \emph{transition} as the basic unit of agent-environment exchange.
+A transition contains the observed initial state \(s\), the action \(a\) chosen by the agent and the reward \(r\), as well as the next state \(s'\). The definition of the state depends on the paper in question.
+Usually, for the original DQN paper and its derivatives, a state consists of a short sequence of screenshots from the Atari emulator. The sequence length is four for the original DQN \cite{atari-dqn}.
 
 \subsection{Experience Replay}
 
-Experience replay refers to keeping a replay queue in memory and sampling episodes at random from this queue \cite{atari-dqn}.
+Experience replay refers to keeping a replay memory.
+The replay memory stores all transitions observed during training.
+In the approach described in \cite{atari-dqn}, the replay memory is used for sampling episodes at random.
 
-Firstly, experience replay boosts the sample efficiency of Q-learning. Q-learning is an online learning algorithm: given a sample, it will consume it to adjust its values.
-This immediate discarding can lead to forgetting, thus producing suboptimal behaviour.
-Storing samples overcomes this problem.
+The replay memory increments the sample efficiency of Q-learning.
+Q-learning is an \emph{online} learning algorithm: given a sample, it will consume it immediately to adjust its values.
+This process of instantly discarding samples can lead to ``forgetting''.
+Storing every sample overcomes this problem.
 
-Secondly, random sampling is important due to the nature of the data.
+Random sampling is important due to the nature of the data.
 To explain why replay grants a significant advantage, let us consider a more popular use-case for neural networks: classification problems.
 In supervised learning, a correct training set contains samples that are \emph{uniformly distribuited}.
 Our problem differs significanlty in definition: our input data is sequential.
-(Game states obtained from the Atari emulator are highly correlated.)
+Game states obtained from the Atari emulator are highly correlated.
 Using highly correlated data to train our Q-network can easily lead to overfitting \cite{jaromiru-dqn}.
 Thus, it is better to sample episodes at random instead of training in an ordered sequence.
 
 In DQN, the capacity of the replay memory is limited, as specified by a hyperparameter \(N\). When the memory is full, it discards the oldest sample.
+
+\section{DDQN: Double Deep Q-networks}
+The DQN approach is prone to be overly optimistic when it comes to the estimated Q-values.
+A DQN agent eventually reaches a peak in performance.
+The experience memory becomes polluted with overwhelmingly positive experiences, which in turn, destroy the quality of the Q-newtork.
+
+The \textbf{Double DQN} \cite{ddqn-paper} approach attempts to correct the overestimation problem.
+It proposes using two neural networks to predict the action at every time-step.
 
 \subsection{Target Network}
 
@@ -70,8 +92,26 @@ The target network is \emph{frozen} \cite{long-peak-rl} until the next snapshot.
 Between snapshots, \(Q\) is optimized based on values of the target.
 This significanlty reduces oscillations, increasing stability of learning \cite{atari-dqn}.
 
-\section{Rainbow DQN: The state-of-the-art}
-% * show the graph in the rainbow paper
-% * a series of improvements: list them all
-% * take 2 subsections to explain 2 easier improvements?
-% * mention Sonic the Hedgehog(tm) benchmark and cite it
+\section{PER: Prioritized Experience Replay}
+
+Another improvement is given by \emph{Schaul et al.} in the \emph{Prioritized Experience Replay} paper \cite{per-paper}.
+
+Recall that in the original DQN, episodes are uniformly sampled from the experience memory.
+This causes a problem when our agent is doing well.
+Our memory quickly fills up exclusively with successful states.
+The replay memory automatically discards the older samples as the new ones pile up and the DQN system stops learning.
+
+In this paper, researchers acknowledge that not all samples have equal learning value for the system.
+Thus, ranking samples according to their significance should improve the efficiency of learning.
+
+Several approaches to prioritizing replay samples are presented in \cite{per-paper}. In the section below we attempt to shortly summarize \textbf{proportional prioritization}.
+
+\subsection{Proportional Prioritization}
+
+This strategy proposes ranking each transition proportional to its error.
+
+The \emph{error} is the difference between the \(Q_{\star}(s, a)\)  value (predicted by the online Q-network) and the target estimate (predicted of the target network).
+
+The main idea of this approach is that we assume that our system can learn more efficiently from those divergent states.
+The higher the error of a transition, the more it diverges from the Q-network's predictions.
+We know, intuitively, that humans (and animals) also learn efficiently from experiences which contradict our expectations.
