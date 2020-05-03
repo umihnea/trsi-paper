@@ -282,3 +282,4 @@ TSWLatexianTemp*
 
 __latexindent_temp.tex
 *.pdf
+.DS_Store

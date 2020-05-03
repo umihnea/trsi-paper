@@ -16,10 +16,11 @@ Both systems have managed to surpass all their predecessors in game performance,
 The key difference was that their training was done with absolutely no expert knowledge for either system (hence the ``zero'').
 Instead, everything was learned by self-play \cite{azero}.
 
-\textit{Mnih et al.}'s \textbf{DQN}\cite{atari-dqn} (2013) managed human-level performance at seven classic Atari games.
-Following the success of DQN, the community worked to improve the standard algorithms.
-\textbf{Rainbow DQN} (2017)\cite{rainbow-dqn} is the culmination of that work.
-The authors succesfully combined multiple high-quality improvement methods over the original DQN.
+\textit{Mnih et al.}'s \textbf{DQN}\cite{atari-dqn} (2013) managed impressive performance at seven classic Atari games.
+The agents learn solely by observing the screen, without being given game-specific information.
+This study produced agents able to surpass human-level performance in \emph{Breakout}, \emph{Enduro} and \emph{Pong}.
+Following the success of DQN, the community worked to improve the standard algorithms, such as DDQN \cite{ddqn-paper} and PER \cite{per-paper}.
+In Rainbow DQN (2017)\cite{rainbow-dqn}, the authors succesfully combined multiple high-quality improvement methods over the original DQN.
 The resulting algorithm set a new record on the Atari benchmark.
 
 \textbf{OpenAI Five}\cite{openai-dota} (2018) produced a bot that managed to beat top professional Dota 2 players in international championships.
